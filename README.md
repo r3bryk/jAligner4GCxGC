@@ -147,10 +147,10 @@ Then, the packages and functions must be loaded as follows:
 
 21. Retrieve functional use data from, e.g., EPA FUse, NORMAN dust trial, and in-house harmonized use databases, or any other database(s) at hand:
 - Specify in **lines 3192-3195** paths to the working file and the 3 files with classification data as:
-(i) `path_file = "D:\\Projects\\Test\\Aligned_File.csv"`. Required columns: `Name`, `InChIKey_Consensus`, and `CAS_PubChem`.
-(ii) `path_harm = "D:\\Projects\\Test\\Databases\\Classes_Harmonized`.txt". Required columns: `Name`, `InChIKey`, `Class`, and `CAS`.
-(iii) `path_fuse = "D:\\Projects\\Test\\Databases\\FUse_Database.txt"`. Required columns: `Name`, `InChIKey`, `harmonized_function`, and `CAS`.
-(iv) `path_norm = "D:\\Projects\\Test\\Databases\\NORMAN_Dust_Compounds.txt"`. Required columns: `Name`, `InChIKey`, `Class`, and `CAS`.
+(i) `path_file = "D:\\Projects\\Test\\Aligned_File.csv"`. Required columns: `"Name"`, `"InChIKey_Consensus"`, and `"CAS_PubChem"`.
+(ii) `path_harm = "D:\\Projects\\Test\\Databases\\Classes_Harmonized`.txt". Required columns: `"Name"`, `"InChIKey"`, `"Class"`, and `"CAS"`.
+(iii) `path_fuse = "D:\\Projects\\Test\\Databases\\FUse_Database.txt"`. Required columns: `"Name"`, `"InChIKey"`, `"harmonized_function"`, and `"CAS"`.
+(iv) `path_norm = "D:\\Projects\\Test\\Databases\\NORMAN_Dust_Compounds.txt"`. Required columns: `"Name"`, `"InChIKey"`, `"Class"`, and `"CAS"`.
 (v) Load the files by highlighting **lines 3192-3195** and pressing `“Ctrl + Enter”`.
 - Retrieve functional use data by highlighting **line 3197** (`ClassFinder(path_file, path_harm, path_fuse, path_norm)`) and pressing `“Ctrl + Enter”`.
 
@@ -183,7 +183,6 @@ Then, the packages and functions must be loaded as follows:
 - Run the function by highlighting **line 3255** (`resort_delete_cols(path2files, fileColDrop, col_names, meta_order)`) and pressing `“Ctrl + Enter”`.
 
 ## Notes and recommendations
-
 
 It is recommended to use all the steps, except for `steps 7` and `15`, as some of the functions use the files or columns created by functions in previous steps by their specific filenames or column names, and/or extensions. Hence, if one of those functions was not used and the respective file was not created, the script will crash and return error. Alternatively, in case a function should be skipped, the file(s) can be renamed manually and then used by the respective function. For input filenames and suffices, see the code of the function in question, the part with input file specification, e.g., `if occursin("_Mrgd.csv", f)`.
 
