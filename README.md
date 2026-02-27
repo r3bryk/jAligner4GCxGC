@@ -15,11 +15,11 @@ Andriy Rebryk, https://github.com/r3bryk.
 Before using the script, several applications/tools have to be installed:
 1. Visual Studio Code; https://code.visualstudio.com/download.
 2. Julia Programming Language; https://julialang.org/downloads/.
-3. Julia Extension in Visual Studio Code > Extensions > Search “julia” > Press `Install`.
+3. Julia Extension in Visual Studio Code > Extensions > Search `“julia”` > Press `Install`.
 4. Python 3 Programming Language; https://www.python.org/downloads/.
 5. Conda Package and Environment Management System; https://www.anaconda.com/download.
-6. Pip (package installer for Python); open Command Prompt > Type or copy python.exe -m pip install --upgrade pip > Press Enter.
-7. Selenium for Python; open Command Prompt > Type or copy pip install selenium > Press Enter.
+6. Pip (package installer for Python); open Command Prompt > Type or copy `python.exe -m pip install --upgrade pip` > Press `Enter`.
+7. Selenium for Python; open Command Prompt > Type or copy `pip install selenium` > Press `Enter`.
 8. Google Chrome; https://www.google.com/chrome/.
 9. ChromeDriver; use the same version as your Google Chrome version; https://googlechromelabs.github.io/chrome-for-testing/.
 
