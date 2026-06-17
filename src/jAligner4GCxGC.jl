@@ -1,3 +1,5 @@
+module jAligner4GCxGC
+
 # Enable using packages
 using Pkg
 
@@ -16,7 +18,7 @@ using HTTP
 using PubChem
 using PubChemCrawler
 using JSON
-using WebDriver
+#using WebDriver
 #using PyCall
 
 # Import selenium with PyCall
@@ -2853,3 +2855,5 @@ function resort_delete_cols(path2files::AbstractString,
     return out_file
 end
 
+
+end # End of module
