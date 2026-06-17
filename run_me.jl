@@ -1,5 +1,10 @@
-# PAckage installation
-# If you have the package already installed, you can skip this step. If you have made changes to the package and want to use the updated version, you can run this code to reinstall the package from the local path.
+#################################################################################
+################################# Installation ##################################
+#################################################################################
+# These lines should be run in REPL the first time to install the package and load it; 
+# after that, you can just run the execution part (starting with "using jAligner4GCxGC") 
+# without running the installation part again, unless you want to update the package or have made changes to the code.
+
 using Pkg
 
 Pkg.add(url="https://github.com/r3bryk/jAligner4GCxGC")
@@ -9,6 +14,9 @@ Pkg.add(url="https://github.com/r3bryk/jAligner4GCxGC")
 #################################################################################
 ################################# EXECUTION #####################################
 #################################################################################
+# From this line onwards, the code can be run as a script (e.g., VSCode) without running
+# the installation part again, unless you want to update the package or have made changes to the code.
+
 using jAligner4GCxGC
 
 # Specify the path to input files
