@@ -2,7 +2,8 @@
 # If you have the package already installed, you can skip this step. If you have made changes to the package and want to use the updated version, you can run this code to reinstall the package from the local path.
 using Pkg
 
-Pkg.add(url="/Users/saersamanipour/Desktop/dev/pkgs/jAligner4GCxGC/jAligner4GCxGC.jl")
+Pkg.add(url="https://github.com/r3bryk/jAligner4GCxGC")
+# include("/Users/saersamanipour/Desktop/dev/pkgs/jAligner4GCxGC/src/jAligner4GCxGC.jl")
 
 
 #################################################################################
@@ -142,7 +143,6 @@ numfrags = 150  # Number of fragments in the spectra to consider for comparison
 similarity_method = "DISCO"    # Spectral similarity method: "DISCO" (DIstance & Spectrum Correlation Optimization) or "NDP" (Normalized Dot Product)
 feature_align_external(path2files, rt2_tol_lowA, rt2_tol_highA, rt_tol_lowA, h_thresh, rt_tol_highA, sim_thresh, mz_tol, overviewMerging, weights, tr1_parts; numfrags, similarity_method)
 
-#"""
 
 # Filter out rows after alignment, where "Name" contains, e.g., compounds with spectra similar to toluene (m/z 91 or 92),
 # if their spectra do not contain other m/z values, like molecular ions

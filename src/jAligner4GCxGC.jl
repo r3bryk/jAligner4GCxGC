@@ -15,7 +15,7 @@ using Dates
 using Unicode
 using JSON3
 using HTTP
-using PubChem
+#using PubChem
 using PubChemCrawler
 using JSON
 #using WebDriver
