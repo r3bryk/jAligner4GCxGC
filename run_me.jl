@@ -1,11 +1,14 @@
+# PAckage installation
+# If you have the package already installed, you can skip this step. If you have made changes to the package and want to use the updated version, you can run this code to reinstall the package from the local path.
 using Pkg
 
-include("/Users/saersamanipour/Desktop/dev/pkgs/jAligner4GCxGC/jAligner4GCxGC.jl")
+Pkg.add(url="/Users/saersamanipour/Desktop/dev/pkgs/jAligner4GCxGC/jAligner4GCxGC.jl")
 
 
 #################################################################################
 ################################# EXECUTION #####################################
 #################################################################################
+using jAligner4GCxGC
 
 # Specify the path to input files
 println("Specifying a folder with .txt files for processing. ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
