@@ -361,16 +361,6 @@ jAligner4GCxGC.PubChemRetriever(path2files)
 
 
 
-# !!! ClassyFire Batch webpage is no longer working !!!
-# Retrieve chemical class data from ClassyFire Batch
-# Specify the path to chromedriver.exe on your PC 
-# path2chromedriver = "C:\\Program Files (x86)\\Google\\chromedriver-win64\\chromedriver.exe"
-
-# Call the function
-# jAligner4GCxGC.ClassyFire_Batch(path2files, path2chromedriver)
-
-
-
 # Retrieve functional use data from EPA FUse, NORMAN dust trial & in-house harmonized use databases
 # Specify paths to working file and 3 files with classification data
 path_file = "D:\\Projects\\Test\\Aligned_File.csv"
