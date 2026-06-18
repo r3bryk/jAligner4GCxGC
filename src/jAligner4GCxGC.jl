@@ -1995,6 +1995,115 @@ end
 
 
 
+# A DTXSID retrieval function
+function get_dtxsid(cid::Int)
+    url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/$cid/JSON"
+
+    try
+        resp = HTTP.get(url; readtimeout=15)
+        resp.status != 200 && return "NA"
+
+        data = JSON3.read(String(resp.body))
+        sections = get(get(data, :Record, Dict()), :Section, [])
+
+        function extract_dtxsid(sections)
+            for sec in sections
+                if haskey(sec, :TOCHeading) && sec[:TOCHeading] == "DSSTox Substance ID"
+                    if haskey(sec, :Information)
+                        for info in sec[:Information]
+                            val = get(get(info, :Value, Dict()), :StringWithMarkup, [])
+                            for s in val
+                                txt = get(s, :String, "")
+                                if startswith(txt, "DTXSID")
+                                    return txt
+                                end
+                            end
+                        end
+                    end
+                end
+
+                if haskey(sec, :Section)
+                    res = extract_dtxsid(sec[:Section])
+                    res !== nothing && return res
+                end
+            end
+            return nothing
+        end
+
+        out = extract_dtxsid(sections)
+        return out === nothing ? "NA" : out
+
+    catch
+        return "NA"
+    end
+end
+
+
+
+# Uses and Use Classification retrieval function
+function get_pubchem_uses(cid::Int)
+    url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/$cid/JSON"
+
+    try
+        resp = HTTP.get(url; readtimeout=15)
+        resp.status != 200 && return ("NA", "NA")
+
+        data = JSON3.read(String(resp.body))
+        root = get(get(data, :Record, Dict()), :Section, [])
+
+        uses = String[]
+        classes = String[]
+
+        function walk(sections)
+            for sec in sections
+                heading = get(sec, :TOCHeading, "")
+
+                if heading == "Use and Manufacturing"
+                    subsec = get(sec, :Section, [])
+                    for s in subsec
+                        subheading = get(s, :TOCHeading, "")
+
+                        if subheading == "Uses"
+                            append!(uses, extract_strings(s))
+                        elseif subheading == "Use Classification"
+                            append!(classes, extract_strings(s))
+                        end
+                    end
+                end
+
+                if haskey(sec, :Section)
+                    walk(sec[:Section])
+                end
+            end
+        end
+
+        function extract_strings(section)
+            out = String[]
+            if haskey(section, :Information)
+                for info in section[:Information]
+                    vals = get(get(info, :Value, Dict()), :StringWithMarkup, [])
+                    for v in vals
+                        push!(out, get(v, :String, ""))
+                    end
+                end
+            end
+            return out
+        end
+
+        walk(root)
+
+        return (
+            isempty(uses) ? "NA" : join(unique(uses), "; "),
+            isempty(classes) ? "NA" : join(unique(classes), "; ")
+        )
+
+    catch
+        return ("NA", "NA")
+    end
+end
+
+
+
 # The main function to retrieve data from PubChem
 function PubChemRetriever(path2files::String)
     files = readdir(path2files)
@@ -2015,6 +2124,9 @@ function PubChemRetriever(path2files::String)
             df.InChIKey_PubChem = fill("NA", nrow(df))
             df.SMILES_PubChem = fill("NA", nrow(df))
             df.CAS_PubChem = fill("NA", nrow(df))
+            df.DTXSID_PubChem = fill("NA", nrow(df))
+            df.Uses = fill("NA", nrow(df))
+            df.Use_Classification = fill("NA", nrow(df))
             df.InChIKey_Consensus = fill("NA", nrow(df))
             df.CAS_Consensus = fill("NA", nrow(df))
 
@@ -2022,6 +2134,10 @@ function PubChemRetriever(path2files::String)
             println("-"^150)
 
             for (i, row) in enumerate(eachrow(df))
+                dtxsid = "NA"
+                uses = "NA"
+                use_class = "NA"
+
                 name = row[:Name]
                 inchikey = row[:InChIKey]
                 
@@ -2058,9 +2174,18 @@ function PubChemRetriever(path2files::String)
 
                         # Retrieve CAS numbers
                         df.CAS_PubChem[i] = get_main_cas(cid)
-                                                
+                        # Retrieve DTXSID
+                        dtxsid = get_dtxsid(cid)
+                        df.DTXSID_PubChem[i] = dtxsid
+                        # Retrieve Uses & Use Classification
+                        uses, use_class = get_pubchem_uses(cid)
+                        df.Uses[i] = uses
+                        df.Use_Classification[i] = use_class
+
                         println("$i: $name --> InChIKey: $(df.InChIKey_PubChem[i]) // SMILES: $(df.SMILES_PubChem[i]) // CAS#: $(df.CAS_PubChem[i])")
+                        println("$i: $name --> DTXSID: $(df.DTXSID_PubChem[i]) // Uses: $(df.Uses[i]) // Use Classification: $(df.Use_Classification[i])")
                         println("-"^150)
+
                     else
                         println("$i: $name --> Not found in PubChem")
                     end
