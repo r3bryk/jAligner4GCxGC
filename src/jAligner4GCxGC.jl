@@ -1,7 +1,7 @@
 module jAligner4GCxGC
 
-# Enable using packages
-using Pkg
+# # Enable using packages
+# using Pkg
 
 # Import packages
 using PlotlyJS
@@ -27,10 +27,10 @@ using JSON
 
 
 #################################################################################
-################################# Hard coded parameters #########################
+############################# Hard coded parameters #############################
 #################################################################################
 
-# Specify the keywords to filter out
+# Specify the keywords (unwanted compound names) to filter out
 keywords = [
     "1H-Tetrazol-5-amine", "1H-Tetrazole, 1-methyl-", "Acetic acid, mercapto-", 
     "1H-Pyrrole-2-carbonitrile", "5-Diazo-1,3-cyclopentadiene", "1H-Pyrrole-3-carbonitrile", 
@@ -43,6 +43,8 @@ keywords = [
     "silver", "silyl", "TBDMS", "TMS", "triazolo[", "Tricyclo[3.2.2.0(2,4)]", 
     "Zinc", "Zirconium", "Beryllium"
 ]
+
+
 
 # Specify the filters as a list of tuples (keyword, spectrum_number (specific integer m/z in spectrum))
 filters = [
@@ -175,6 +177,7 @@ filters = [
 ]
 
 
+
 # Specify the filters for "Peak" and bleed m/z as a list of tuples (keyword, spectrum_number (specific integer m/z in spectrum))
 bleed_filters = [
     ("Peak", 73), ("Peak", 147), ("Peak", 207), ("Peak", 267), ("Peak", 281), ("Peak", 341), ("Peak", 355), ("Peak", 429), ("Peak", 479),
@@ -185,13 +188,15 @@ bleed_filters = [
     ("Peak", 553), ("Peak", 563), ("Peak", 623), ("Peak", 91), ("Peak", 92), ("Peak", 137)
 ]
 
+
+
 #################################################################################
-################################# FUNCTIONS #####################################
+################################# Functions #####################################
 #################################################################################
 
-# A function to import, clean-up, and align data from multiple .csv files, ensuring consistency and handling missing values appropriately
+# A function to import, clean-up, and align data from multiple .csv files, 
+# ensuring consistency and handling missing values appropriately
 function report_import_external(path2files)
-
     println("Running external alignment. Make sure that the directory contains only relevant .csv files that require alignment.")
     nn = readdir(path2files)
     Rep = DataFrame()
@@ -580,7 +585,7 @@ function group_candidates_external(reps, ind_files)
             ORI_[i] = string(selected_f.Origin[1])
             QUAM_[i] = string(selected_f.QuantMass[1])
         end 
-   end 
+    end
 
     return(MinRt, MaxRt, AveRt, MinMass, MaxMass, AveMass, MinRI, MaxRI, MedRI, MinRIlib, MaxRIlib, MedRIlib, Int_, ID_, SPEC_, FR_, CAS_, IN_, INtr_, SIM_, HIGH_, BASM_, ACTM_, FWHH_, PROB_, EXPI_, OBSI_, DRI_, CLS_, ORI_, QUAM_)
 end
@@ -1180,6 +1185,7 @@ function feature_align_external(path2files, rt2_tol_lowA, rt2_tol_highA, rt_tol_
     println("Start time: ", time_b4_align)
     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
     println("*"^150)
+
     return
 end
 
@@ -1286,6 +1292,7 @@ function internal_feature_merging(path2files, tr1_dev, tr2_dev, sim_thresh, mz_t
         # Save merged pairs
         CSV.write(f_n[1:end-4] * "_IntMerged.csv", df_m)
     end
+
     println("\n", "Done internal feature merging for ", length(filter(f -> endswith(f, ".csv") && !occursin(r"Original|merged|IntMerged|Aligned", f), readdir(path2files))), " .csv files.")
     println("Start time: ", time_b4_merge)
     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
@@ -1305,6 +1312,7 @@ function filter_signal_external(path2files, filtType, base, mz, int, mz_tol, tr1
     if tr1_range == [0, 0]
         tr1_check = false
     end
+
     tr2_check = true
     if tr2_range == [0, 0]
         tr2_check = false
@@ -1403,6 +1411,7 @@ function filter_signal_external(path2files, filtType, base, mz, int, mz_tol, tr1
         # Save file
         CSV.write(f_n, df)
     end
+
     println("\n", "Done classifying features as bleed, toluene, DCM, alkanes, and acids in ", length(filter(f -> endswith(f, ".csv") && !occursin(r"Original|merged|IntMerged|Aligned", f), readdir(path2files))), " .csv files. ")
     println("Start time: ", time_b4_org)
     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
@@ -1498,6 +1507,7 @@ function remove_zero_intensity_pairs(path2files)
             end
         end
     end
+
     println("Done removing m/z:intensity pairs with intensity values containing '0.' from spectra of ", length(filter(f -> endswith(f, ".csv") && !occursin(r"Original|merged|IntMerged|Aligned", f), readdir(path2files))), " .csv files. ")
     println("Start time: ", time_b4_0)
     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
@@ -1578,6 +1588,7 @@ function filter_classifications(path2files)
             end
         end
     end
+
     println("Done filtering ", length(filter(f -> endswith(f, ".csv") && !occursin(r"Original|merged|IntMerged|Aligned", f), readdir(path2files))), " .csv files. ")
     println("Start time: ", time_b4)
     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
@@ -1638,6 +1649,7 @@ function filter_names(path2files, keywords::Vector{String})
             end
         end
     end
+
     println("Done filtering ", length(filter(f -> endswith(f, ".csv") && !occursin(r"Original|merged|IntMerged|Aligned", f), readdir(path2files))), " .csv files. ")
     println("Start time: ", time_b4_filter)
     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
@@ -1726,6 +1738,7 @@ function filter_names_if_missing_mz(path2files, filters::Vector{Tuple{String, In
             end
         end
     end
+
     println("Done filtering ", length(filter(f -> endswith(f, ".csv") && !occursin(r"Original|merged|IntMerged|Aligned", f), readdir(path2files))), " .csv files. ")
     println("Start time: ", time_b4_filtr)
     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
@@ -1802,6 +1815,7 @@ function filter_peak_names_with_bleed_mz(path2files, bleed_filters::Vector{Tuple
             end
         end
     end
+
     println("Done filtering ", length(filter(f -> endswith(f, ".csv") && !occursin(r"Original|merged|IntMerged|Aligned", f), readdir(path2files))), " .csv files. ")
     println("Start time: ", time_b4_flt)
     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
@@ -2027,6 +2041,7 @@ function merge_postalign(path2files::String, threshold::Float64, weights::Vector
             println("-"^150)
         end
     end
+
     println("Done merging ", length(filter(f -> endswith(f, "_Mrgd.csv"), readdir(path2files))), " .csv files. ")
     println("Start time: ", time_b4_mrg)
     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
@@ -2068,6 +2083,8 @@ function get_pubchem_cid(identifier::Union{String, Nothing}, type::Symbol)
     end
 end
 
+
+
 # Safe wrapper: try InChIKey first, fallback to Name
 function safe_get_cid(inchikey::Union{String, Nothing}, name::Union{String, Nothing})
     cid = get_pubchem_cid(inchikey, :inchikey)
@@ -2078,6 +2095,8 @@ function safe_get_cid(inchikey::Union{String, Nothing}, name::Union{String, Noth
 
     return cid
 end
+
+
 
 # A CAS# retrieval function
 function get_main_cas(cid::Int)
@@ -2128,6 +2147,8 @@ function get_main_cas(cid::Int)
         return "NA"
     end
 end
+
+
 
 # The main function to retrieve data from PubChem
 function PubChemRetriever(path2files::String)
@@ -2233,12 +2254,228 @@ function PubChemRetriever(path2files::String)
             println("-"^150)
         end
     end
+
     println("Done retrieving data for ", length(filter(f -> endswith(f, "_PubChem.csv"), readdir(path2files))), " .csv files. ")
     println("Start time: ", time_b4_rtrv)
     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
     println("*"^150)
 end
 
+
+
+# # A function to retrieve functional use data from EPA FUse, NORMAN dust trial & in-house harmonized use databases
+# # The databases should be in TXT (tab-delimited) format
+# function ClassFinder(path_file, path_harm, path_fuse, path_norm)
+#     time_b4_cls = Dates.format(now(), "yyyy-mm-dd HH:MM:SS")
+#     println("Retrieving functional use classification from EPA FUse, NORMAN dust trial & in-house harmonized use databases... ")
+#     println("-"^150)
+#     println(" ")
+#     println("Reading input file...")
+#     println("-"^150)
+#     # Reading the input file
+#     input_df = CSV.read(path_file, header=1, DataFrame)
+#     println("Input file read. Rows: ", nrow(input_df), " Columns: ", ncol(input_df))
+#     println("-"^150)
+
+#     # Strip any extra spaces from column names
+#     for col in names(input_df)
+#         rename!(input_df, Symbol(col) => Symbol(strip(col)))
+#     end
+#     println("Input DF columns after stripping spaces: \n", names(input_df))
+#     println("-"^150)
+
+#     # Adding empty classification columns
+#     input_df[:, :Class_Harmonized] = fill("", nrow(input_df))
+#     input_df[:, :Class_FUse] = fill("", nrow(input_df))
+#     input_df[:, :Class_NORMAN] = fill("", nrow(input_df))
+
+#     # println("Input file: \n", input_df)
+#     # println("-"^150)
+
+#     # Ensure Name column exists in input_df and rename it to ensure column is correctly identified
+#     if :Name in names(input_df)
+#         println("Found column :Name")
+#     else
+#         println("Column :Name not found, renaming...")
+#         rename!(input_df, Symbol("Name") => :Name)
+#     end
+
+#     # Ensure InChIKey_PubChem column exists in input_df and rename it to ensure column is correctly identified
+#     if :InChIKey_Consensus in names(input_df)
+#         println("Found column :InChIKey_Consensus")
+#     else
+#         println("Column :InChIKey_Consensus not found, renaming...")
+#         rename!(input_df, Symbol("InChIKey_Consensus") => :InChIKey_Consensus)
+#     end
+
+#     # Ensure CAS_PubChem column exists in input_df and rename it to ensure column is correctly identified
+#     if :CAS_PubChem in names(input_df)
+#         println("Found column :CAS_Consensus")
+#     else
+#         println("Column :CAS_Consensus not found, renaming...")
+#         rename!(input_df, Symbol("CAS_Consensus") => :CAS_Consensus)
+#     end
+
+#     println("-"^150)
+#     println("Input DF columns: \n", names(input_df))
+#     println("-"^150)
+
+#     # Reading classification files
+#     function read_classification_file(path)
+#         println("Reading classification file: ", path)
+#         println("-"^150)
+        
+#         # Check file extension and read accordingly
+#         if any(ext -> endswith(lowercase(path), ext), [".csv", ".txt"])
+#             df = CSV.read(path, DataFrame; delim='\t')
+#         elseif any(ext -> endswith(lowercase(path), ext), [".xls", ".xlsx"])
+#             df = DataFrame(XLSX.readtable(path, 1)[])
+#         else
+#             error("Unsupported file format: $path")
+#             println("!"^150)
+#         end
+        
+#         # Strip any extra spaces from column names
+#         for col in names(df)
+#             rename!(df, Symbol(col) => Symbol(strip(col)))
+#         end
+        
+#         println("Classification DF columns after stripping spaces: ", names(df))
+#         println("-"^150)
+        
+#         # Remove quotes from the 'Name' column if present
+#         if :Name in names(df)
+#             println("Stripping quotes from the 'Name' column...")
+#             df[!, :Name] .= replace.(df[!, :Name], r"^\"(.*)\"$" => s -> s.match[1])
+#         end
+        
+#         # Rename columns to match the input file if needed
+#         if :InChIKey in names(df)
+#             rename!(df, :InChIKey => :InChIKey_Consensus)
+#         end
+        
+#         if :CAS in names(df)
+#             rename!(df, :CAS => :CAS_Consensus)
+#         end
+        
+#         return df
+#     end
+
+#     class_harm = read_classification_file(path_harm)
+#     class_fuse = read_classification_file(path_fuse)
+#     class_norm = read_classification_file(path_norm)
+
+#     # Rename columns in classification files for consistency
+#     rename!(class_harm, :InChIKey => :InChIKey_Consensus, :CAS => :CAS_Consensus)
+#     rename!(class_fuse, :InChIKey => :InChIKey_Consensus, :CAS => :CAS_Consensus)
+#     rename!(class_norm, :InChIKey => :InChIKey_Consensus, :CAS => :CAS_Consensus)
+
+#     println("Classification files read. Harmonized rows: ", nrow(class_harm), ", FUse rows: ", nrow(class_fuse), ", NORMAN rows: ", nrow(class_norm))
+#     println("-"^150)
+#     println("Harmonized cols: ", names(class_harm), 
+#         "\nFUse cols: ", names(class_fuse), 
+#         "\nNORMAN cols: ", names(class_norm))
+#     println("-"^150)
+
+#     # Classification function
+#     function update_class!(input_df, class_df, key_col, class_col, target_col)
+#         class_map = Dict(class_df[!, key_col] .=> class_df[!, class_col])
+#         println("Updating classes for key column: ", key_col, " and target column: ", target_col)
+#         println("-"^150)
+    
+#         for row in eachrow(input_df)
+#             key = row[key_col]
+#             # Check if the key is missing or empty
+#             if key == "" || ismissing(key)
+#                 println("Skipping row with missing or empty key: ", row)
+#                 println("-"^150)
+#                 continue
+#             end
+
+#             # Skip rows where :Name contains "Peak" or "Feature"
+#             if key_col == "Name" && occursin.(r"(Peak|Feature)", [row[:Name]])[1]
+#                 println("Skipping entry with name containing 'Peak' or 'Feature': ", row[:Name])
+#                 continue
+#             end
+    
+#             if row[target_col] == "" || ismissing(row[target_col])
+#                 if haskey(class_map, key)
+#                     # If key exists in the class_map, update the target column
+#                     row[target_col] = class_map[key]
+#                 else
+#                     println("No match found for key: ", key, " in ", target_col)
+#                     println("-"^150)
+#                     # Update with "NA" if no match found
+#                     row[target_col] = "NA"
+#                 end
+#             end
+#         end
+#     end
+
+#     # Update classes based on Name, InChIKey_Consensus, and CAS_Consensus
+#     println("Updating classes based on Name, InChIKey_Consensus, and CAS_Consensus...")
+#     println("-"^150)
+#     for (key_col, target_col, class_col, class_df) in [
+#         ("Name", "Class_Harmonized", "Class", class_harm),
+#         ("Name", "Class_FUse", "harmonized_function", class_fuse),
+#         ("Name", "Class_NORMAN", "Class", class_norm),
+#         ("InChIKey_Consensus", "Class_Harmonized", "Class", class_harm),
+#         ("InChIKey_Consensus", "Class_FUse", "harmonized_function", class_fuse),
+#         ("InChIKey_Consensus", "Class_NORMAN", "Class", class_norm),
+#         ("CAS_Consensus", "Class_Harmonized", "Class", class_harm),
+#         ("CAS_Consensus", "Class_FUse", "harmonized_function", class_fuse),
+#         ("CAS_Consensus", "Class_NORMAN", "Class", class_norm)
+#     ]
+#         update_class!(input_df, class_df, key_col, class_col, target_col)
+#     end
+
+#     # Fill empty cells with 'NA'
+#     println("Filling empty cells with 'NA'...")
+#     println("-"^150)
+#     for col in names(input_df)
+#         if eltype(input_df[!, col]) <: AbstractString
+#             replace!(input_df[!, col], "" => "NA")
+#         end
+#     end
+
+#     # Save the output file
+#     output_path = replace(path_file, ".csv" => "_Class.csv")
+#     CSV.write(output_path, input_df)
+#     println("Classification completed successfully for ", length(filter(f -> endswith(f, "_CFB.csv"), readdir(path2files))), " .csv files. ")
+#     println("File path: $output_path")
+#     println("-"^150)
+#     println("Start time: ", time_b4_cls)
+#     println("End time: ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
+#     println("*"^150)
+# end
+
+
+
+
+
+# A helper function to find first matching column name and rename to a standard name
+function standardize_column!(df::DataFrame, target::Symbol, variants::Vector{String})
+    current_names = String.(names(df))
+
+    # Already exists
+    if String(target) in current_names
+        println("Found standard column: $target")
+        return
+    end
+
+    # Search variants (case-insensitive)
+    lookup = Dict(lowercase(nm) => nm for nm in current_names)
+
+    for var in variants
+        if haskey(lookup, lowercase(var))
+            old_name = Symbol(lookup[lowercase(var)])
+            rename!(df, old_name => target)
+            println("Renamed $(old_name) -> $(target)")
+            return
+        end
+    end
+    println("WARNING: Could not find column for $(target)")
+end
 
 
 
@@ -2271,29 +2508,24 @@ function ClassFinder(path_file, path_harm, path_fuse, path_norm)
     # println("Input file: \n", input_df)
     # println("-"^150)
 
-    # Ensure InChIKey_PubChem column exists in input_df and rename it to ensure column is correctly identified
+    # Ensure Name column exists in input_df and rename it to ensure column is correctly identified
     if :Name in names(input_df)
         println("Found column :Name")
     else
         println("Column :Name not found, renaming...")
         rename!(input_df, Symbol("Name") => :Name)
     end
+    
+    # Standardize identifier columns
+    standardize_column!(input_df, :Name,
+        ["Name", "Metabolite name", "Metabolite Name", "chemical_name",
+            "Feature name", "feature_name", "Feature Name", "Compound name", "Compound Name"])
 
-    # Ensure InChIKey_PubChem column exists in input_df and rename it to ensure column is correctly identified
-    if :InChIKey_Consensus in names(input_df)
-        println("Found column :InChIKey_Consensus")
-    else
-        println("Column :InChIKey_Consensus not found, renaming...")
-        rename!(input_df, Symbol("InChIKey_Consensus") => :InChIKey_Consensus)
-    end
+    standardize_column!(input_df, :CAS_Consensus,
+        ["CAS_Consensus", "CAS", "CASRN", "CAS#"])
 
-    # Ensure CAS_PubChem column exists in input_df and rename it to ensure column is correctly identified
-    if :CAS_PubChem in names(input_df)
-        println("Found column :CAS_Consensus")
-    else
-        println("Column :CAS_Consensus not found, renaming...")
-        rename!(input_df, Symbol("CAS_Consensus") => :CAS_Consensus)
-    end
+    standardize_column!(input_df, :InChIKey_Consensus,
+        ["InChIKey_Consensus", "InChIKey", "inchikey"])
 
     println("-"^150)
     println("Input DF columns: \n", names(input_df))
@@ -2329,25 +2561,16 @@ function ClassFinder(path_file, path_harm, path_fuse, path_norm)
         end
         
         # Rename columns to match the input file if needed
-        if :InChIKey in names(df)
-            rename!(df, :InChIKey => :InChIKey_Consensus)
-        end
-        
-        if :CAS in names(df)
-            rename!(df, :CAS => :CAS_Consensus)
-        end
-        
-        return df
-    end
+        standardize_column!(df, :InChIKey_Consensus,
+            ["InChIKey_Consensus", "InChIKey", "inchikey"])
 
+        standardize_column!(df, :CAS_Consensus,
+            ["CAS_Consensus", "CAS", "CASRN", "CAS#"])
+    end
+    
     class_harm = read_classification_file(path_harm)
     class_fuse = read_classification_file(path_fuse)
     class_norm = read_classification_file(path_norm)
-
-    # Rename columns in classification files for consistency
-    rename!(class_harm, :InChIKey => :InChIKey_Consensus, :CAS => :CAS_Consensus)
-    rename!(class_fuse, :InChIKey => :InChIKey_Consensus, :CAS => :CAS_Consensus)
-    rename!(class_norm, :InChIKey => :InChIKey_Consensus, :CAS => :CAS_Consensus)
 
     println("Classification files read. Harmonized rows: ", nrow(class_harm), ", FUse rows: ", nrow(class_fuse), ", NORMAN rows: ", nrow(class_norm))
     println("-"^150)
@@ -2855,5 +3078,5 @@ function resort_delete_cols(path2files::AbstractString,
     return out_file
 end
 
-
-end # End of module
+# End of module
+end
