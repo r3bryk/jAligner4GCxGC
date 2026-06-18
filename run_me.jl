@@ -1,23 +1,32 @@
 #################################################################################
-################################# Installation ##################################
+################################ Installation ###################################
 #################################################################################
-# These lines should be run in REPL the first time to install the package and load it; 
+
+# These lines (10 and 12) should be run in Julia REPL the first time to install the package and load it; 
 # after that, you can just run the execution part (starting with "using jAligner4GCxGC") 
 # without running the installation part again, unless you want to update the package or have made changes to the code.
 
+# Enable using packages
 using Pkg
 
 Pkg.add(url="https://github.com/r3bryk/jAligner4GCxGC")
 # include("/Users/saersamanipour/Desktop/dev/pkgs/jAligner4GCxGC/src/jAligner4GCxGC.jl")
 
 
-#################################################################################
-################################# EXECUTION #####################################
-#################################################################################
-# From this line onwards, the code can be run as a script (e.g., VSCode) without running
-# the installation part again, unless you want to update the package or have made changes to the code.
 
+#################################################################################
+################################# Execution #####################################
+#################################################################################
+
+# From this line onwards, the code can be run as a script (e.g., in VS Code) 
+# without running the installation part again, unless you want to update the package or have made changes to the code.
+
+# Before running any part of the script, specify all the file paths and/or parameters where needed.
+
+# Import package
 using jAligner4GCxGC
+
+
 
 # Specify the path to input files
 println("Specifying a folder with .txt files for processing. ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
@@ -37,19 +46,17 @@ filter_classifications(path2files)
 
 
 # Filter out rows where "Name" contains unwanted values, e.g., siloxanes & other bleed
-
 filter_names(path2files, keywords)
 
 
 
 # Filter out rows where "Name" contains, e.g., compounds with spectra similar to toluene (m/z 91 or 92),
 # if their spectra do not contain other m/z values, like molecular ions
-
 filter_names_if_missing_mz(path2files, filters)
 
 
-# Filter out rows where "Name" contains "Peak" if their spectra contain bleed m/z values
 
+# Filter out rows where "Name" contains "Peak" if their spectra contain bleed m/z values
 filter_peak_names_with_bleed_mz(path2files, bleed_filters)
 
 
@@ -152,6 +159,7 @@ similarity_method = "DISCO"    # Spectral similarity method: "DISCO" (DIstance &
 feature_align_external(path2files, rt2_tol_lowA, rt2_tol_highA, rt_tol_lowA, h_thresh, rt_tol_highA, sim_thresh, mz_tol, overviewMerging, weights, tr1_parts; numfrags, similarity_method)
 
 
+
 # Filter out rows after alignment, where "Name" contains, e.g., compounds with spectra similar to toluene (m/z 91 or 92),
 # if their spectra do not contain other m/z values, like molecular ions
 filter_names_mz_postalign(path2files, filters)
@@ -168,11 +176,12 @@ PubChemRetriever(path2files)
 
 
 
+# !!! ClassyFire Batch webpage is no longer working !!!
 # Retrieve chemical class data from ClassyFire Batch
 # Specify the path to chromedriver.exe on your PC 
-#path2chromedriver = "C:\\Program Files (x86)\\Google\\chromedriver-win64\\chromedriver.exe"
+# path2chromedriver = "C:\\Program Files (x86)\\Google\\chromedriver-win64\\chromedriver.exe"
 # Call the function
-#ClassyFire_Batch(path2files, path2chromedriver)
+# ClassyFire_Batch(path2files, path2chromedriver)
 
 
 
@@ -188,7 +197,7 @@ ClassFinder(path_file, path_harm, path_fuse, path_norm)
 
 
 # Library search
-# Load library and aligned overview files
+# Specify paths to library and aligned overview files
 println("Specifying library/database file... ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"))
 pathDB = "D:\\Projects\\Test\\Databases\\Dust_Database.xlsx"
 println("Done specifying library/database. ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"), "\n")
@@ -197,12 +206,12 @@ pathFile = "D:\\Projects\\Test\\Aligned_File.csv"
 println("Done specifying overview file. ", Dates.format(now(), "yyyy-mm-dd HH:MM:SS"), "\n")
 
 # Run library search
-addRIwin = [30, 50, 50, 100]       # Additional RI window on top of the aligned minimum and maximum
-specID = "CS"       # Which of the spectra should be matched: "BM" = best match, "CS" = consensus
+addRIwin = [30, 50, 50, 100]    # Additional RI window on top of the aligned minimum and maximum
+specID = "CS"   # Which of the spectra should be matched: "BM" = best match, "CS" = consensus
 mz_tol = 0.1    # m/z tolerance
 numfrags = 50   # Minimum number of highest intensity fragments used from each spectrum (default = 15); can be left out for running the function
-index = "all"      # Which features should be used for library matching: "all" uses every entry, a vector of numbers [1, 2, 6] uses only those indices, and collect(1:100) uses only indices/entries from 1 to 100
-similarity_method = "DISCO"    # Spectral similarity method: "DISCO" (DIstance & Spectrum Correlation Optimization) or "NDP" (Normalized Dot Product)
+index = "all"   # Which features should be used for library matching: "all" uses every entry, a vector of numbers [1, 2, 6] uses only those indices, and collect(1:100) uses only indices/entries from 1 to 100
+similarity_method = "DISCO" # Spectral similarity method: "DISCO" (DIstance & Spectrum Correlation Optimization) or "NDP" (Normalized Dot Product)
 librarySearch(pathDB, pathFile, addRIwin, specID, mz_tol, numfrags, index, similarity_method)
 
 
@@ -243,4 +252,3 @@ col_names = [
 ]
 # Call the function
 resort_delete_cols(path2files, fileColDrop, col_names, meta_order)
-
