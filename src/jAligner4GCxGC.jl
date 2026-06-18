@@ -2154,6 +2154,7 @@ function PubChemRetriever(path2files::String)
                     # If CID is still nothing, report and skip
                     if cid === nothing
                         println("$i: $name --> Not found in PubChem by Name or InChIKey")
+                        println("-"^150)
                         continue
                     end
 
@@ -2183,7 +2184,7 @@ function PubChemRetriever(path2files::String)
                         df.Use_Classification[i] = use_class
 
                         println("$i: $name --> InChIKey: $(df.InChIKey_PubChem[i]) // SMILES: $(df.SMILES_PubChem[i]) // CAS#: $(df.CAS_PubChem[i])")
-                        println("$i: $name --> DTXSID: $(df.DTXSID_PubChem[i]) // Uses: $(df.Uses[i]) // Use Classification: $(df.Use_Classification[i])")
+                        println("DTXSID: $(df.DTXSID_PubChem[i]) // Uses: $(df.Uses[i]) // Use Classification: $(df.Use_Classification[i])")
                         println("-"^150)
 
                     else
