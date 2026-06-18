@@ -2490,7 +2490,7 @@ function ClassFinder(path_file, path_harm, path_fuse, path_norm)
     # Save the output file
     output_path = replace(path_file, ".csv" => "_Class.csv")
     CSV.write(output_path, input_df)
-    println("Classification completed successfully for ", length(filter(f -> endswith(f, "_CFB.csv"), readdir(path2files))), " .csv files. ")
+    println("Classification completed successfully.")
     println("File path: $output_path")
     println("-"^150)
     println("Start time: ", time_b4_cls)
