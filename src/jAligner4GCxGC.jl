@@ -27,170 +27,6 @@ using JSON
 
 
 #################################################################################
-############################# Hard coded parameters #############################
-#################################################################################
-
-# Specify the keywords (unwanted compound names) to filter out
-keywords = [
-    "1H-Tetrazol-5-amine", "1H-Tetrazole, 1-methyl-", "Acetic acid, mercapto-", 
-    "1H-Pyrrole-2-carbonitrile", "5-Diazo-1,3-cyclopentadiene", "1H-Pyrrole-3-carbonitrile", 
-    "1H-1,2,3-Triazole-4-", "1H-1,2,4-Triazole, 3-", "1-Propanamine, 3-dibenzo", 
-    "2,4,6-Cycloheptatrien", "2-Picoline, 6-nitro-", "4-Benzyloxy-3-hydroxy", 
-    "9-[(S)-2-(Hydroxymethyl)", "Arsan", "arsan", "Arsen", "arsen", "arsin",
-    "Benzyl (1,2,3-thiadiazol", "Benzyl-4,9,15-trioxa", "Bora", "bora", 
-    "Borin", "borin", "boro", "Boro", "boryl", "Chromium", "Cobalt", 
-    "Iron,", "Mercury", "sila", "Sila", "Silic", "silic", "Silo", "silo", 
-    "silver", "silyl", "TBDMS", "TMS", "triazolo[", "Tricyclo[3.2.2.0(2,4)]", 
-    "Zinc", "Zirconium", "Beryllium"
-]
-
-
-
-# Specify the filters as a list of tuples (keyword, spectrum_number (specific integer m/z in spectrum))
-filters = [
-    ("(4aS,4bS,10aS)-1,1,4a-Trimethyl-7-(propan-2-ylidene)-1,2,3,4,4a,4b,5,6,7,9,10,10a-dodecahydrophenanthrene", 272),
-    ("(Benzyloxy)(methyl)amine", 105),
-    ("(Isopropoxymethy)lbenzene", 107),
-    ("(R)-9-[(S)-2-(Hydroxymethyl)pyrrolidin-1-yl]-3-methyl-3,4-dihydro-2H-benzo[b][1,4,5]oxathiazepine 1,1-dioxide", 312),
-    ("(S)-9-[(S)-2-(Hydroxymethyl)pyrrolidin-1-yl]-3-methyl-3,4-dihydro-2H-benzo[b][1,4,5]oxathiazepine 1,1-dioxide", 311),
-    ("1-Benzyl-2-(trifluoromethyl)aziridine", 201),
-    ("1-Benzyl-3-hydroxypyridinium hydroxide", 185),
-    ("1-Benzylcyclopentanol-1", 129),
-    ("1H-[1,2,3]Triazole-4-carboxylic acid, 5-acetylamino-1-benzyl-, phenylamide", 335),
-    ("1-Phenyl-2-propanol", 136),
-    ("2(3H)-Benzofuranone, 6-ethenylhexahydro-6-methyl-3-methylene-7-(1-methylethenyl)-, [3aS-(3aa,6a,7ß,7aß)]-", 232),
-    ("2-(Benzyloxy)-1-chloro-3-fluorobenzene", 117),
-    ("2-(Benzyloxy)-4-methoxybenzaldehyde", 242),
-    ("2-Benzyl-3-isopropyl-cyclopentanone", 216),
-    ("2-Benzyloxyethylamine", 105),
-    ("2-Butanol, 3-benzyloxy-", 135),
-    ("3-(Iodomethyl)pyridine", 219),
-    ("3-Benzyl-4-chloro-1,2,3-triazole 1-oxide", 130),
-    ("3-Benzylsulfanyl-3-fluoro-2-trifluoromethyl-acrylonitrile", 258),
-    ("3H-Pyrazole, 5-ethynyl-3,3-dimethyl-", 120),
-    ("3-Picoline, 2-nitro-", 108),
-    ("4-(Benzyloxy)-3-fluorophenol, trifluoroacetate", 314),
-    ("4-(Benzyloxy)pyridine 1-oxide", 201),
-    ("4-Azido-2-phenylmethanesulfinyl-benzonitrile", 115),
-    ("4-Azido-2-phenylmethanesulfonyl-benzonitrile", 234),
-    ("4-Benzyloxy-2-methyl-2-buten-1-ol", 108),
-    ("4H-1,2,4-triazol-3-ol, 5-[(phenylmethyl)thio]-", 207),
-    ("5-Benzyloxy-2-nitrotoluene", 243),
-    ("5-Diazo-1,3-cyclopentadiene", 63),
-    ("7,8-Diazabicyclo[4.2.2]deca-2,4,7,9-tetraen-7-oxide", 118),
-    ("7-Chloro-2,3-dihydro-3-(4-N,N-dimethylaminobenzylidene)-5-phenyl-1H-1,4-benzodiazepin-2-one", 159),
-    ("Benzaldehyde, 4-methoxy-3-(phenylmethoxy)-", 242),
-    ("Benzene, (1,1-dimethylnonyl)-", 232),
-    ("Benzene, (1-azidoethyl)-", 147),
-    ("Benzene, (1-butylheptyl)-", 147),
-    ("Benzene, (1-butylnonyl)-", 147),
-    ("Benzene, (1-ethyldecyl)-", 246),
-    ("Benzene, (1-ethylundecyl)-", 260),
-    ("Benzene, (1-methyldecyl)-", 232),
-    ("Benzene, (1-methyldodecyl)-", 260),
-    ("Benzene, (1-methylundecyl)-", 246),
-    ("Benzene, (1-pentylheptyl)-", 246),
-    ("Benzene, (1-pentyloctyl)-", 260),
-    ("Benzene, (1-propyldecyl)-", 133),
-    ("Benzene, (1-propylnonyl)-", 133),
-    ("Benzene, (2,2-dichloroethyl)-", 174),
-    ("Benzene, (2-chloroethyl)-", 140),
-    ("Benzene, (2-chloropropyl)-", 154),
-    ("Benzene, (2-cyclohexylethyl)-", 188),
-    ("Benzene, (2-methylpropyl)-", 134),
-    ("Benzene, (3-methylpentyl)-", 162),
-    ("Benzene, (bromomethyl)-", 170),
-    ("Benzene, (butoxymethyl)-", 107),
-    ("Benzene, (ethoxymethyl)-", 135),
-    ("Benzene, (iodomethyl)-", 127),
-    ("Benzene, (phenoxymethyl)-", 184),
-    ("Benzene, (propoxymethyl)-", 107),
-    ("Benzene, [(2-propenyloxy)methyl]-", 107),
-    ("Benzene, [(methylsulfinyl)methyl]-", 154),
-    ("Benzene, [(methylsulfonyl)methyl]-", 170),
-    ("Benzene, 1,1'-(1,1,2,2-tetramethyl-1,2-ethanediyl)bis-", 119),
-    ("Benzene, 1,1'-[oxybis(methylene)]bis-", 107),
-    ("Benzene, 1-methyl-2-nitroso-", 121),
-    ("Benzene, 1-methyl-3-(1-methylethenyl)-", 132),
-    ("Benzene, n-butyl-", 134),
-    ("Benzeneacetaldehyde", 120),
-    ("Benzeneacetamide", 135),
-    ("Benzeneacetamide, N", 149),
-    ("Benzeneacetic acid", 136),
-    ("Benzeneacetic acid 1-methylethyl ester", 176),
-    ("Benzeneacetic acid, 2-propenyl ester", 103),
-    ("Benzeneethanol", 178),
-    ("Benzenemethanesulfonamide", 107),
-    ("Benzenemethanesulfonyl chloride", 126),
-    ("Benzenemethanethiol", 124),
-    ("Benzenepropanenitrile, a-phenyl-", 107),
-    ("Benzenesulfonamide, 4-methyl-", 171),
-    ("Benzonitrile, m-phenethyl-", 201),
-    ("Benzyl (1,2,3-thiadiazol-4-y)carbamate", 108),
-    ("Benzyl 2-chloroethyl sulfone", 218),
-    ("Benzyl 4-nitrophenyl carbonate", 139),
-    ("Benzyl butyl phthalate", 149),
-    ("Benzyl chloride", 126),
-    ("Benzyl chloroformate", 170),
-    ("Benzyl isopentyl ether", 107),
-    ("Benzyl lactate", 180),
-    ("Benzyl methyl disulfide", 170),
-    ("Benzyl methyl ketone", 134),
-    ("Benzyl N-[4-(4-cyano-3-fluorophenyl)phenyl]carbamate, TFA", 238),
-    ("Benzylcyclopentane", 160),
-    ("Bibenzyl", 182),
-    ("Bicyclo[2.2.2]oct-7-en-2-one, 5-methylene-", 134),
-    ("Bicyclo[3.1.1]hept-2-ene, 3,6,6-trimethyl-", 121),
-    ("Butane, 1-(benzyloxy)-2-[(benzyloxy)methyl]-", 193),
-    ("Cycloheptatrienylium, iodide", 78),
-    ("Decane, 1-chloro-", 105),
-    ("Dispiro[cyclopropane-1,3'-tricyclo[5.2.1.0(2,6)]decane-10',1''-cyclopropane]-4',8'-diene", 115),
-    ("Dodecane", 170),
-    ("Dodecane, 1-chloro-", 105),
-    ("Dodecane, 2,6,11-trimethyl-", 113),
-    ("Ethane, hexachloro-", 201),
-    ("Eucalyptol", 154),
-    ("Hydrazinecarbothioamide", 60),
-    ("Hydroxylamine, O-(phenylmethyl)-", 105),
-    ("Isophorone", 138),
-    ("MGK-264", 164),
-    ("N-(Phenylacetyl)glycine", 193),
-    ("N-Benzyloxy-2-carbomethoxyaziridine", 105),
-    ("N-Hydroxymethyl-2-phenylacetamide", 165),
-    ("Pentadecane", 212),
-    ("Pentalene, 1,2,4,5,6,6a-hexahydro-2-methylene-", 120),
-    ("Phenylacetamide", 118),
-    ("Phenylacetamide, N-propyl-", 177),
-    ("Phenylethyl Alcohol", 122),
-    ("Phosphine oxide, bis(pentamethylphenyl)-", 342),
-    ("Phthalan", 120),
-    ("Pyridine, 2-methyl-, 1-oxide", 109),
-    ("Pyridine, 4-methyl-2-nitro-", 138),
-    ("Sabinyl, 2-methylbutanoate", 119),
-    ("Spiro[4.4]non-3-en-2-one, 4-methyl-3-(1H-tetrazol-5-yl)-1-oxa-", 123),
-    ("ß-Myrcene", 136),
-    ("Sydnone, 3-(phenylmethyl)-", 176),
-    ("tert-Nonylphenol, Ac derivative", 177),
-    ("Thiocyanic acid", 149),
-    ("Thiocyanic acid, phenylmethyl ester", 149),
-    ("Tricyclo[3.2.2.0(2,4)]non-8-ene-6,6,7,7-tetracarbonitrile", 128)    
-]
-
-
-
-# Specify the filters for "Peak" and bleed m/z as a list of tuples (keyword, spectrum_number (specific integer m/z in spectrum))
-bleed_filters = [
-    ("Peak", 73), ("Peak", 147), ("Peak", 207), ("Peak", 267), ("Peak", 281), ("Peak", 341), ("Peak", 355), ("Peak", 429), ("Peak", 479),
-    ("Peak", 59), ("Peak", 78), ("Peak", 135), ("Peak", 156), ("Peak", 193), ("Peak", 195), ("Peak", 209), ("Peak", 215),
-    ("Peak", 221), ("Peak", 251), ("Peak", 253), ("Peak", 255), ("Peak", 269), ("Peak", 327), ("Peak", 329), ("Peak", 331),
-    ("Peak", 333), ("Peak", 339), ("Peak", 343), ("Peak", 377), ("Peak", 401), ("Peak", 403), ("Peak", 405), ("Peak", 415),
-    ("Peak", 417), ("Peak", 439), ("Peak", 451), ("Peak", 475), ("Peak", 477), ("Peak", 489), ("Peak", 503), ("Peak", 549),
-    ("Peak", 553), ("Peak", 563), ("Peak", 623), ("Peak", 91), ("Peak", 92), ("Peak", 137)
-]
-
-
-
-#################################################################################
 ################################# Functions #####################################
 #################################################################################
 
@@ -827,7 +663,10 @@ end
 
 
 # A function to align RT1 fractions (parts)
-function feature_align_fraction(rep, name, ind_files, rt_tol, rt2_tol,rt2_tol_lowA,rt2_tol_highA,rt_tol_lowA,h_thresh,rt_tol_highA,sim_thresh,mz_tol, highTol, feature, Inten, Idents, Specs, Forms, Cas, Inchi, InchiT, Sim, High, BasM, ActM, Fwhh, Prob, ExpI, ObsI, dRI, Cls, Ori, QuaM, maxRTmatch)
+function feature_align_fraction(rep, name, ind_files, rt_tol, rt2_tol, rt2_tol_lowA, rt2_tol_highA, rt_tol_lowA,
+    h_thresh, rt_tol_highA, sim_thresh, mz_tol, highTol, feature, Inten, Idents, Specs, Forms, Cas, Inchi, InchiT, 
+    Sim, High, BasM, ActM, Fwhh, Prob, ExpI, ObsI, dRI, Cls, Ori, QuaM, maxRTmatch; numfrags::Int = 150,
+    similarity_method::String = "DISCO")
     outside = sum(rep.Rt .> maxRTmatch)
     i = 1
     while i <= (size(rep,1) - outside)
@@ -956,7 +795,13 @@ function feature_align_external(path2files, rt2_tol_lowA, rt2_tol_highA, rt_tol_
         ind_part = findall((tr1_part_lim[1] - 3*rt_tol) .<= rep[!, "Rt"] .<= (tr1_part_lim[t+1] + 1*rt_tol))
         println("Part $(t)/$tr1_parts: passing $(length(ind_part)) features")
         maxRTmatch = tr1_part_lim[t+1]
-        feature, Inten, Idents, Specs, Forms, Cas, Inchi, InchiT, Sim, High, BasM, ActM, Fwhh, Prob, ExpI, ObsI, dRI, Cls, Ori, QuaM, rep_rem = feature_align_fraction(rep[ind_part, :], name, ind_files, rt_tol, rt2_tol, rt2_tol_lowA, rt2_tol_highA, rt_tol_lowA, h_thresh, rt_tol_highA, sim_thresh, mz_tol, highTol, feature, Inten, Idents, Specs, Forms, Cas, Inchi, InchiT, Sim, High, BasM, ActM, Fwhh, Prob, ExpI, ObsI, dRI, Cls, Ori, QuaM, maxRTmatch)
+        
+        feature, Inten, Idents, Specs, Forms, Cas, Inchi, InchiT, Sim, High, BasM, ActM, Fwhh, Prob, ExpI, ObsI, 
+        dRI, Cls, Ori, QuaM, rep_rem = feature_align_fraction(rep[ind_part, :], name, ind_files, rt_tol, 
+        rt2_tol, rt2_tol_lowA, rt2_tol_highA, rt_tol_lowA, h_thresh, rt_tol_highA, sim_thresh, mz_tol, highTol, 
+        feature, Inten, Idents, Specs, Forms, Cas, Inchi, InchiT, Sim, High, BasM, ActM, Fwhh, Prob, ExpI, ObsI, 
+        dRI, Cls, Ori, QuaM, maxRTmatch; numfrags = numfrags, similarity_method = similarity_method)
+        
         rep = [rep[.!((tr1_part_lim[1] - 3*rt_tol) .<= rep[!, "Rt"] .<= (tr1_part_lim[t+1] + 1*rt_tol)), :]; rep_rem]
         println("Features remaining in rep $(size(rep, 1))")
     end
