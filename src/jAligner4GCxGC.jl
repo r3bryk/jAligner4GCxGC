@@ -2411,6 +2411,8 @@ function ClassFinder(path_file, path_harm, path_fuse, path_norm)
 
         standardize_column!(df, :CAS_Consensus,
             ["CAS_Consensus", "CAS", "CASRN", "CAS#"])
+
+        return df
     end
     
     class_harm = read_classification_file(path_harm)
